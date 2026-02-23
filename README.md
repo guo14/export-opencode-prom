@@ -10,6 +10,11 @@ This project is made possible by **OpenCode** and its **Big Pickle** model, whic
 - Groups metrics by model and provider
 - Exposes Prometheus-compatible `/metrics` endpoint
 - Configurable scrape interval
+- Multi-host filtering in Grafana dashboard
+
+## Screenshot
+
+![Grafana Dashboard](./screenshot.png)
 
 ## Requirements
 
