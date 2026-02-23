@@ -2,7 +2,7 @@
 
 A Prometheus exporter for [OpenCode](https://opencode.ai) that collects metrics from the OpenCode SQLite database and exposes them for Prometheus scraping.
 
-This project is made possible by **OpenCode** and its **Big Pickle** model, which provides the data source for all metrics.
+This project is pure vibe code — built entirely with **OpenCode** and its **Big Pickle** model.
 
 ## Features
 
