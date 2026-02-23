@@ -12,7 +12,8 @@ from prometheus_client import generate_latest, REGISTRY, Gauge
 sys.stdout = sys.stderr = open(sys.stdout.fileno(), mode='w', buffering=1)
 
 DEFAULT_DB_PATH = os.environ.get("DB_PATH", "/data/opencode.db")
-DEFAULT_PORT = 9092
+DEFAULT_PORT = int(os.environ.get("METRICS_PORT", "9092"))
+DEFAULT_LISTEN_IP = os.environ.get("LISTEN_IP", "0.0.0.0")
 DEFAULT_SCRAPE_INTERVAL = 15
 
 sessions_total = Gauge("opencode_sessions_total", "Total number of sessions")
@@ -177,7 +178,7 @@ def run_exporter(db_path, port, interval):
     print(f"Port: {port}", flush=True)
     print(f"Scrape interval: {interval}s", flush=True)
 
-    server = HTTPServer(("0.0.0.0", port), PrometheusHandler)
+    server = HTTPServer((DEFAULT_LISTEN_IP, port), PrometheusHandler)
     server_thread = threading.Thread(target=server.serve_forever, daemon=True)
     server_thread.start()
     print(f"Server running on http://0.0.0.0:{port}", flush=True)

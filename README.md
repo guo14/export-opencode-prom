@@ -2,6 +2,8 @@
 
 A Prometheus exporter for [OpenCode](https://opencode.ai) that collects metrics from the OpenCode SQLite database and exposes them for Prometheus scraping.
 
+This project is made possible by **OpenCode** and its **Big Pickle** model, which provides the data source for all metrics.
+
 ## Features
 
 - Collects session, message, token, and cost metrics
@@ -39,8 +41,21 @@ Add to your `prometheus.yml`:
 - job_name: 'opencode'
   scrape_interval: 15s
   static_configs:
-    - targets: ['localhost:9092']
+    - targets:
+      - '192.168.1.100:9092'  # host1
+      - '192.168.1.101:9092'  # host2
+  relabel_configs:
+    - source_labels: [__address__]
+      regex: '192.168.1.100:9092'
+      target_label: instance
+      replacement: 'host1'
+    - source_labels: [__address__]
+      regex: '192.168.1.101:9092'
+      target_label: instance
+      replacement: 'host2'
 ```
+
+The `instance` label is used by the Grafana dashboard for filtering by host.
 
 ### 3. Import Grafana Dashboard
 
@@ -91,6 +106,10 @@ The exporter mounts the host's home directory to access this database.
 - **Port**: 9092
 - **Network**: Host mode (required for Prometheus to scrape)
 - **Volume**: Mounts `$HOME` to access OpenCode database
+
+## Acknowledgments
+
+This project takes inspiration from [tokscale](https://github.com/junhoyeo/tokscale) for understanding OpenCode's data schema and metrics collection approach.
 
 ## License
 
